@@ -1,0 +1,3 @@
+[submodule "Purpur"]
+	path = Purpur
+	url = git@github.com:PurpurMC/Purpur.git

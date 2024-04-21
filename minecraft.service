@@ -1,0 +1,27 @@
+[Unit]
+Description=Minecraft Server
+Requires=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+WorkingDirectory=/opt/minecraft/systemd-minecraft-server
+
+ExecStart=/usr/bin/java -Xmx8192M -Xms8192M -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15 -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true --add-modules=jdk.incubator.vector -jar /opt/minecraft/systemd-minecraft-server/server.jar nogui
+
+ExecStop=/usr/local/bin/mcrcon -p password -w 5 "say Server is shutting down!" save-all stop
+Restart=on-failure
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+SuccessExitStatus=143
+ProtectSystem=full
+
+PrivateDevices=true
+PrivateUsers=true
+
+User=minecraft
+Group=minecraft
+
